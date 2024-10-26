@@ -1,0 +1,93 @@
+def solveCSP():
+    nva = 0
+    for b in range(1,121):
+        for c in range(1,b):                # from C1, c needs to be less than b
+            for e in range(1,121):
+                if ((pow((b - c),2) + 1861) / (e * c)).is_integer():
+                    f = int((pow((b - c),2) + 1861) / (e * c))
+                    nva += 1
+                    if (e + f) > b and f < (120 - c - e + (2*b*b - 3*c*c)) and 1 <= f <= 120:
+                        a = b*b - c*c
+                        d = -2*b*b + 3*c*c
+                        if 1 <= a <= 120 and 1 <= d <= 120:
+                            return a,b,c,d,e,f,nva
+    return 0,0,0,0,0,0,nva
+
+
+
+print(solveCSP())
+
+
+
+Problem B:
+import math
+
+def solveCSP():
+    nva = 0
+    for b in range(1, 121):
+        for c in range(1, b):  # C1: c needs to be less than b
+            for e in range(1, 121):
+                for g in range(1, e): #C9: g needs to be less than e
+                    for j in range(1, 121):
+                        nva +=1
+                        a = b * b - c * c  # C1
+                        f = int(((b - c) ** 2) + 1861) // (e * c)  # C4
+
+                        # Move assignments right after they can be assigned
+                        i = int(math.sqrt(b * e * (g + 1)) - c)
+                        h = int(e * f + (200 / b))
+                        d = -2 * b * b + 3 * c * c  # C3
+
+                        # Check the domain of the newly assigned variables
+                        if (
+                            1 <= a <= 120
+                            and 1 <= d <= 120
+                            and 1 <= f <= 120
+                            and 1 <= h <= 120
+                            and 1 <= i <= 120
+                            and (g + i) ** 3 == (h - a - 1) ** 2  # C6
+                            and b * e * f == h * b - 200  # C7
+                            and (c + i) ** 2 == b * e * (g + 1)  # C8
+                            and g + i < e  # C9
+                            and d + h > 180  # C10
+                            and j < h - c - g  # C11
+                            and j > b * g + d + e + g  # C12
+                        ):
+                            return a, b, c, d, e, f, g, h, i, j, nva
+
+    return 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, nva
+
+print(solveCSP())
+
+
+import math
+
+def solveCSP():
+    nva = 0
+    for b in range(1, 121):
+        for c in range(1, b):  # C1: c needs to be less than b
+            for e in range(1, 121):
+                for g in range(1, e):  # C9: g needs to be less than e
+                    for j in range(1, 121):
+                        f = int(((b - c) ** 2) + 1861) // (e * c)
+                        nva += 1
+                        if (e + f) > b and f < (120 - c - e + (2 * b * b - 3 * c * c)) and 1 <= f <= 120:
+                            a = b * b - c * c
+                            d = -2 * b * b + 3 * c * c
+                            h = int(e * f + (200 / b))
+                            m = b * (f - 2) - (a + d)  # C17
+                            i = int(math.sqrt(b * e * (g + 1)) - c)
+                            if 1 <= a <= 120 and 1 <= d <= 120 and 1 <= m <= 120 and 1 <= i <= 120 and 1 <= h <= 120:
+                                if (g + i) ** 3 == (h - a - 1) ** 2 and g + i < e and d + h > 180 and j < h - c - g and j > b * g + d + e + g:
+                                    # Move assignments right after they can be assigned                               
+                                    k = int((h * m * m + 20) / j)  # c15
+                                    l = int(b * (b + 5) / (k * m)) #c13
+                                    # C4
+                                    # Check the domain of the newly assigned variables
+                                    if f**3 == k*k*m*m*10 + 331 and j + l == i * l:
+                                        return a, b, c, d, e, f, g, h, i, j, k, l, m, nva
+
+    return 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, nva
+
+print(solveCSP())
+
